@@ -24,17 +24,19 @@ import scala.xml.transform.{RewriteRule, RuleTransformer}
 
 object KafkaBuild extends Build {
   val commonSettings = Seq(
-    version := "0.8-SNAPSHOT",
+    version := "0.7.2FF",
     organization := "org.apache",
-    scalacOptions ++= Seq("-deprecation", "-unchecked", "-g:none"),
-    scalaVersion := "2.10.0",
+    scalacOptions ++= Seq("-deprecation", "-unchecked"),
+    scalaVersion := "2.10.3",
     javacOptions ++= Seq("-Xlint:unchecked", "-source", "1.5"),
     parallelExecution in Test := false, // Prevent tests from overrunning each other
     libraryDependencies ++= Seq(
       "org.scalatest"         %% "scalatest"    % "1.9" % "test",
       "log4j"                 %  "log4j"        % "1.2.15",
       "net.sf.jopt-simple"    %  "jopt-simple"  % "3.2",
-      "org.slf4j"             %  "slf4j-simple" % "1.6.4"
+      "org.slf4j"             %  "slf4j-simple" % "1.6.4",
+      "org.scala-lang"        % "scala-actors"  % "2.10.0",
+      "org.xerial.snappy" % "snappy-java" % "1.0.5-M3"
     ),
     // The issue is going from log4j 1.2.14 to 1.2.15, the developers added some features which required
     // some dependencies on various sun and javax packages.
@@ -47,6 +49,12 @@ object KafkaBuild extends Build {
         <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.4">
           <exclude org="log4j" module="log4j"/>
           <exclude org="jline" module="jline"/>
+        </dependency>
+        <dependency org="com.github.sgroschupf" name="zkclient" rev="0.1">
+        </dependency>
+        <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.4">
+          <exclude module="log4j"/>
+          <exclude module="jline"/>
         </dependency>
       </dependencies>
   )
@@ -139,5 +147,4 @@ object KafkaBuild extends Build {
       case other => other
     }
   })
-
 }
